@@ -13,7 +13,7 @@
     "npm": "6.9.0"
   },
   "scripts": {
-    "postinstall": "webpack --watch",
+    "postinstall": "webpack",
     "start": "node app.js",
     "start:debug": "DEBUG=* node app.js"
   },
