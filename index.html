@@ -10,9 +10,15 @@
 <body>
   <div id="my_dataviz"></div>
   Fighter Check!!
-  <button onclick="update(winsAndLossesData);changeColor('blue')">Wins/Losses</button>
-  <button onclick="update(strikesData);changeColor('red')">Strikes Attempted/Landed</button>
+  <button onclick="update(winsAndLossesData)">Wins/Losses</button>
+  <button onclick="update(strikesData)">Strikes Attempted/Landed</button>
   <script>
+
+    // const onClick = (arg, color) => {
+    //   update(arg);
+    //   changeColor(color);
+    //   console.log(arg, color)
+    // }
     // set the dimensions and margins of the graph
       var margin = { top: 30, right: 30, bottom: 70, left: 60 },
         width = 460 - margin.left - margin.right,
@@ -124,7 +130,8 @@
           data.push(
             {
               value: fighter.wins.total,
-              group: "Wins"
+              group: "Wins",
+              color: "blue"
             }
           );
           return data;
@@ -135,7 +142,8 @@
           data.push(
             {
               value: fighter.losses.total,
-              group: "Losses"
+              group: "Losses",
+              color: "blue"
             }
           );
           return data;
@@ -146,11 +154,13 @@
           data.push(
             {
               value: fighter.strikes.attempted,
-              group: "Attempted Strikes"
+              group: "Attempted Strikes",
+              color: "red"
             },
             {
               value: fighter.strikes.successful,
-              group: "Successful Strikes"
+              group: "Successful Strikes",
+              color: "red"
             }
           );
           return data;
@@ -161,7 +171,7 @@
       let winsData = winsDataParser(fighter);
       let winsAndLossesData = winsData.concat(lossesData);
 
-      console.log(strikesData)
+      // console.log(strikesData)
 
       // Initialize the X axis
       var x = d3.scaleBand()
@@ -185,7 +195,7 @@
         xAxis.call(d3.axisBottom(x))
 
         // Update the Y axis
-        y.domain([0, d3.max(data, function (d) { return d.value })]);
+        y.domain([0, d3.max(data, function (d) { console.log(d.value); return d.value })]);
         yAxis.transition().duration(1000).call(d3.axisLeft(y));
 
         // Create the u variable
@@ -202,7 +212,7 @@
           .attr("y", function (d) { return y(d.value); })
           .attr("width", x.bandwidth())
           .attr("height", function (d) { return height - y(d.value); })
-          .attr("fill", "#69b3a2")
+          .attr("fill", function(d) { return d.color})
 
         // If less group in the new dataset, I delete the ones not in use anymore
         u
